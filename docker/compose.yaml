@@ -1,0 +1,31 @@
+# ─────────────────────────────────────────────────────────────────
+# vaultwarden — Docker Compose merge fragment
+#
+# This file is merged into the main docker-compose.yaml by sovctl:
+#   sovctl package install vaultwarden
+#
+# Manual usage:
+#   docker compose -f docker-compose.yaml -f packages/vaultwarden/docker/compose.yaml up -d
+# ─────────────────────────────────────────────────────────────────
+services:
+  vaultwarden:
+    image: vaultwarden/server:latest
+    container_name: sovereign-vaultwarden
+    restart: unless-stopped
+    ports:
+      - "${VAULTWARDEN_PORT:-80}:80"
+    environment:
+      - TZ=${TZ:-UTC}
+    volumes:
+      - vaultwarden-data:/data
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.vaultwarden.rule=Host(`vaultwarden.${SOV_HOST:-sovereign.local}`)
+      - traefik.http.routers.vaultwarden.entrypoints=websecure
+      - traefik.http.routers.vaultwarden.tls.certresolver=letsencrypt
+    networks:
+      - sovereign
+
+volumes:
+  vaultwarden-data:
+    driver: local

@@ -1,0 +1,36 @@
+{
+  "$schema": "https://sovereign.dev/schemas/package/1.0.0",
+  "id": "vaultwarden",
+  "name": "Vaultwarden",
+  "version": "1.0.0",
+  "description": "Self-hosted password manager, Bitwarden-compatible",
+  "license": "AGPL-3.0",
+  "author": {
+    "name": "Sovereign Infrastructure Team",
+    "url": "https://opensovereign.dev"
+  },
+  "kind": "package",
+  "taxonomy": {
+    "tier": "opt",
+    "relations": [
+      { "type": "depends", "target": "sovctl" }
+    ]
+  },
+  "tags": ["service", "security", "passwords"],
+  "upstream": {
+    "name": "Vaultwarden",
+    "homepage": "https://github.com/dani-garcia/vaultwarden",
+    "license": "AGPL-3.0"
+  },
+  "contents": {
+    "plugin": null,
+    "gitops": {
+      "kustomization": "k8s/kustomization.yaml",
+      "resources": "k8s/"
+    },
+    "container": {
+      "image": "vaultwarden/server:latest",
+      "compose": "docker/compose.yaml"
+    }
+  }
+}
